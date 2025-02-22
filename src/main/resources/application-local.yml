@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/backend3
+    driver-class-name: org.postgresql.Driver
+    username: db3_user
+    password: db3_password
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+  servlet:
+    context-path: /
