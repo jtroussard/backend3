@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.Arrays;
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
@@ -56,6 +59,11 @@ public class AuthController {
         response.addCookie(jwtCookie);
 
         return ResponseEntity.ok("Login successful");
+// spoofed response for roles to test frontedn integration
+//        return ResponseEntity.ok(Map.of(
+//                "message", "Login successful",
+//                "roles", Arrays.asList(2001, 1984, 5150, 1337)
+//        ));
     }
 
     @GetMapping("/test/protected")

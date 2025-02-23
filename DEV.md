@@ -23,16 +23,16 @@
 - Add **test user** in Postgresql DB for testing
 - ✅ **Functional Commit**
 
-### [ ] **3. Implement JWT Token Authentication**
+### [X] **3. Implement JWT Token Authentication**
 - Create `JwtUtils` for token generation and validation
-- Implement `JwtAuthFilter` to validate JWTs
+- Implement `JwtAuthFilter` to validate JWTs <==== PROJECT IS HERE
 - Modify `SecurityConfig`:
     - Enforce JWT authentication
     - Restrict secured endpoints
 - Create `/login` endpoint to issue JWTs
 - ✅ **Functional Commit**
 
-### [ ] **4. Secure Token Storage (HttpOnly Cookies)**
+### [X] **4. Secure Token Storage (HttpOnly Cookies)**
 - Modify `JwtUtils` to store JWT in **HttpOnly, Secure** cookies
 - Update `/login` endpoint to send token as a **cookie response**
 - Ensure frontend **no longer accesses JWT directly**
@@ -42,11 +42,30 @@
 
 ### [ ] **5. Role-Based Access Control (RBAC)**
 - Expand `User` entity with **roles** (Admin, User, etc.)
+- Accept login request parameters in body and get front end to hash the password before sending
 - Modify `SecurityConfig`:
     - Restrict endpoints based on user roles
     - Enforce `@PreAuthorize` where needed
 - Update `JwtUtils` to include roles in JWT
 - Ensure `JwtAuthFilter` extracts roles from token
+- Discuss and consider building a controller endpoint to fetch the user roles for frontend auth context
+- ```javascript
+  useEffect(() => {
+  const fetchUserData = async () => {
+  try {
+  const response = await axios.get('/auth/me', { withCredentials: true });
+  const roles = response?.data?.roles || [];
+  setAuth({ user, roles });
+  } catch (err) {
+  console.error('Failed to fetch user data:', err);
+  }
+  };
+
+  if (accessToken) {
+  fetchUserData();
+  }
+  }, [accessToken]);
+  ```
 - ✅ **Functional Commit**
 
 ### [ ] **6. Implement Refresh Tokens**
@@ -90,6 +109,12 @@
 - Test authentication flow with React frontend
 - Verify role-based access control
 - Validate refresh token handling
+- ✅ **Functional Commit**
+
+### [ ] **11. Prepare Application for Cloud Deployment**
+- Create Task list for this intent, don't forget we need to deploy the data base to the cloud as well
+- Create a kill switch once the applicaiton bill reaches x dollars
+- Create a db backup schedule
 - ✅ **Functional Commit**
 
 ---
@@ -366,3 +391,11 @@ Below is a **comprehensive list of possible request scenarios** and their expect
 30. **User account is disabled but token is still valid** -> **Potential access unless checked** ⚠️
 
 ---
+
+## Long Term TODOs
+1. Set up debugger in IDE
+2. Use Debugger to walk through security chain, confirm authentication provider behavior.
+3. centralize regex patterns for passwords and username constraints etc...
+4. Generic third party sign in
+5. Generic plugin for authenticators
+6. Add Captcha as well or cloudflare DDOS tool?

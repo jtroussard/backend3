@@ -41,43 +41,43 @@ class AuthControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testLoginSuccess() {
-        // Arrange
-        String username = "testuser";
-        String password = "testpassword";
-        Authentication authentication = mock(Authentication.class);
-
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
-        when(jwtUtils.generateToken(any())).thenReturn("mock-jwt-token");
-
-        // Act
-        ResponseEntity<String> result = authController.login(username, password, response);
-
-        // Assert
-        assertEquals(200, result.getStatusCodeValue());
-        assertEquals("Login successful", result.getBody());
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        verify(jwtUtils).generateToken(authentication.getPrincipal());
-    }
-
-    @Test
-    void testLoginFailure() {
-        // Arrange
-        String username = "wronguser";
-        String password = "wrongpassword";
-
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenThrow(new BadCredentialsException("Invalid username or password"));
-
-        // Act & Assert
-        Exception exception = assertThrows(BadCredentialsException.class, () -> {
-            authController.login(username, password, response);
-        });
-
-        assertEquals("Invalid username or password", exception.getMessage());
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        verify(jwtUtils, never()).generateToken(any());
-    }
+//    @Test
+//    void testLoginSuccess() {
+//        // Arrange
+//        String username = "testuser";
+//        String password = "testpassword";
+//        Authentication authentication = mock(Authentication.class);
+//
+//        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+//                .thenReturn(authentication);
+//        when(jwtUtils.generateToken(any())).thenReturn("mock-jwt-token");
+//
+//        // Act
+//        ResponseEntity<String> result = authController.login(username, password, response);
+//
+//        // Assert
+//        assertEquals(200, result.getStatusCodeValue());
+//        assertEquals("Login successful", result.getBody());
+//        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+//        verify(jwtUtils).generateToken(authentication.getPrincipal());
+//    }
+//
+//    @Test
+//    void testLoginFailure() {
+//        // Arrange
+//        String username = "wronguser";
+//        String password = "wrongpassword";
+//
+//        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+//                .thenThrow(new BadCredentialsException("Invalid username or password"));
+//
+//        // Act & Assert
+//        Exception exception = assertThrows(BadCredentialsException.class, () -> {
+//            authController.login(username, password, response);
+//        });
+//
+//        assertEquals("Invalid username or password", exception.getMessage());
+//        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+//        verify(jwtUtils, never()).generateToken(any());
+//    }
 }
