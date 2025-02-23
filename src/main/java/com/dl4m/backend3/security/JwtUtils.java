@@ -2,22 +2,23 @@ package com.dl4m.backend3.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class JwtUtils {
 
     @Value("${jwt.secret}")
     private String secret;
 
+    @Getter
     @Value("${jwt.expiration}")
     private long expiration;
 
@@ -25,17 +26,18 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(Object principal) {
+        if (!(principal instanceof UserDetails userDetails)) {
+            throw new IllegalArgumentException("Principal must be an instance of UserDetails");
+        }
+
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
-                .subject(userDetails.getUsername())
-                .claim("roles", userDetails.getAuthorities().stream()
-                        .map(auth -> auth.getAuthority())
-                        .collect(Collectors.toSet()))
-                .issuedAt(now)
-                .expiration(expiryDate)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
                 .signWith(getSigningKey(), Jwts.SIG.HS256)
                 .compact();
     }
@@ -48,6 +50,8 @@ public class JwtUtils {
                     .parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            log.info("Tuna message {}", e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -59,23 +63,5 @@ public class JwtUtils {
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
-    }
-
-    public Set<String> extractRoles(String token) {
-        Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-
-        List<String> rolesList = claims.get("roles", List.class);
-
-        if (rolesList == null) {
-            return Set.of();
-        }
-
-        return rolesList.stream()
-                .map(String::valueOf)
-                .collect(Collectors.toSet());
     }
 }

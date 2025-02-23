@@ -1,15 +1,17 @@
 package com.dl4m.backend3.controller;
 
-import com.dl4m.backend3.entity.User;
-import com.dl4m.backend3.security.CustomUserDetails;
+import com.dl4m.backend3.security.JwtUtils;
 import com.dl4m.backend3.service.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
@@ -17,21 +19,55 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     CustomUserDetailsService userDetailsService;
+    AuthenticationManager authenticationManager;
+    JwtUtils jwtUtils;
 
     @Autowired
-    public AuthController(CustomUserDetailsService userDetailsService) {
+    public AuthController(
+            CustomUserDetailsService userDetailsService,
+            AuthenticationManager authenticationManager,
+            JwtUtils jwtUtils
+    ) {
         this.userDetailsService = userDetailsService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDetails> login(@RequestParam String username,@RequestParam String password) {
+    public ResponseEntity<String> login(
+            @RequestParam String username,
+            @RequestParam String password,
+            HttpServletResponse response
+    ) {
         log.debug("[CONTROLLER] login endpoint called");
-        try {
-            UserDetails user = userDetailsService.loadUserByUsername(username);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch(Exception err) {
-            log.error("Something went horribly wrong! {}", err.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateToken(authentication.getPrincipal());
+
+        Cookie jwtCookie = new Cookie("jwt", jwt);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // Set to true for HTTPS in production
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge((int) (jwtUtils.getExpiration() / 1000));
+        response.addCookie(jwtCookie);
+
+        return ResponseEntity.ok("Login successful");
     }
+
+    @GetMapping("/test/protected")
+    public ResponseEntity<String> protectedTest() {
+        log.debug("[CONTROLLER] protectedTest endpoint called");
+        return ResponseEntity.ok("You're good!");
+    }
+
+    @GetMapping("/test/public")
+    public ResponseEntity<String> publicTest() {
+        log.debug("[CONTROLLER] publicTest endpoint called");
+        return ResponseEntity.ok("This is a public endpoint.");
+    }
+
 }

@@ -29,6 +29,30 @@ server:
     context-path: /
 
 jwt:
-  secret: BiZABq6jD7C8Dt80T7uQaA==
+  secret: E9vbBG70kXggGNMeNcSIyeYdXR1mgPRQX3y77TdMZLo=
   expiration: 900000
 
+logging:
+  level:
+    root: DEBUG
+    org.springframework: ERROR # Spring Framework
+    org.hibernate: DEBUG # Hibernate
+    org.hibernate.SQL: DEBUG # SQL queries
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # Parameter binding
+    org.springframework.web: DEBUG # Web requests
+    org.springframework.security: DEBUG # Spring Security
+    com.dl4m.backend3: DEBUG # Your application
+    org.apache.catalina.filters.HttpHeaderSecurityFilter: DEBUG # Tomcat header security
+    org.apache.catalina.filters.RemoteIpFilter: DEBUG # Tomcat remote IP filter
+    org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: TRACE # Tomcat request tracing
+    org.apache.catalina.session: DEBUG # Tomcat session logging
+    org.apache.tomcat.util.net: DEBUG # Tomcat network logging
+    org.apache.coyote: DEBUG # Coyote logs
+    org.springframework.boot.devtools: ERROR # Spring Boot DevTools
+    org.postgresql: DEBUG # PostgreSQL driver
+    org.springframework.boot.test: DEBUG # Spring Boot Test
+    org.junit: DEBUG # JUnit
+    com.h2database: DEBUG # H2 database
+    io.jsonwebtoken: DEBUG # JJWT
+    org.springframework.data.jpa: DEBUG #spring data jpa
+    org.springframework.validation: DEBUG #Spring validation
