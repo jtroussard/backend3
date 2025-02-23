@@ -3,7 +3,7 @@
 ---
 
 ## ✅ **Phase 1: Project Setup**
-### [ ] **1. Initialize Spring Boot Project**
+### [X] **1. Initialize Spring Boot Project**
 - Create a new Spring Boot project with:
     - `spring-boot-starter-web`
     - `spring-boot-starter-security`
@@ -16,7 +16,7 @@
 ---
 
 ## ✅ **Phase 2: Authentication & Security**
-### [ ] **2. Basic Authentication Setup**
+### [X] **2. Basic Authentication Setup**
 - Add `User` entity and `UserRepo`
 - Create `UserService` for retrieving users
 - Configure `SecurityConfig` to allow **all requests (temporarily)**
