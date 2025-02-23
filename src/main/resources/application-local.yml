@@ -27,3 +27,8 @@ server:
     include-binding-errors: always
   servlet:
     context-path: /
+
+jwt:
+  secret: BiZABq6jD7C8Dt80T7uQaA==
+  expiration: 900000
+

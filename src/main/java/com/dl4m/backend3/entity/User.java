@@ -39,7 +39,6 @@ public class User {
     private String username;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 8, max = 24, message = "Password must be between 8 and 24 characters")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$",
             message = "Password must contain at least one uppercase, one lowercase, one number, and one special character (!@#$%)")
     @Column(nullable = false, length = 60) // 60 to accommodate hashed passwords
