@@ -50,8 +50,6 @@ public class JwtUtils {
                     .parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            log.info("Tuna message {}", e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
