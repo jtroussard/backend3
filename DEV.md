@@ -22,7 +22,7 @@ This document outlines the step-by-step development plan for the Spring Boot bac
 - Add `User` entity and `UserRepo`
 - Create `UserService` for retrieving users
 - Configure `SecurityConfig` to allow **all requests (temporarily)**
-- Add **in-memory user** for testing
+- Add **test user** in Postgresql DB for testing
 - ✅ **Functional Commit**
 
 ### [ ] **3. Implement JWT Token Authentication**
