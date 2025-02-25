@@ -25,8 +25,16 @@ public class Role {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
+    @NotBlank(message = "Role code is required")
+    @Column(nullable = false, unique = true, length = 4)
+    private int code;
+
+    @Column(length = 50)
+    private String displayName;
+
+    // TODO remove before deployment, minor security issue.
     @Override
     public String toString() {
-        return "Role{id=" + id + ", name='" + name + "'}";
+        return "Role{id=" + id + ", name='" + displayName + ", code='" + code + "'}";
     }
 }

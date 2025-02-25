@@ -2,9 +2,11 @@ package com.dl4m.backend3.controller;
 
 import com.dl4m.backend3.security.JwtUtils;
 import com.dl4m.backend3.service.CustomUserDetailsService;
+import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,6 +38,7 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    @PermitAll
     @PostMapping("/login")
     public ResponseEntity<String> login(
             @RequestParam String username,
@@ -58,6 +61,7 @@ public class AuthController {
         jwtCookie.setMaxAge((int) (jwtUtils.getExpiration() / 1000));
         response.addCookie(jwtCookie);
 
+
         return ResponseEntity.ok("Login successful");
 // spoofed response for roles to test frontedn integration
 //        return ResponseEntity.ok(Map.of(
@@ -66,12 +70,14 @@ public class AuthController {
 //        ));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping("/test/protected")
     public ResponseEntity<String> protectedTest() {
         log.debug("[CONTROLLER] protectedTest endpoint called");
         return ResponseEntity.ok("You're good!");
     }
 
+    @PermitAll
     @GetMapping("/test/public")
     public ResponseEntity<String> publicTest() {
         log.debug("[CONTROLLER] publicTest endpoint called");

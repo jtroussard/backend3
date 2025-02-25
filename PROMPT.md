@@ -43,8 +43,8 @@ We are continuing to build a Spring Boot backend application designed to integra
 application will be critical and hosted in the cloud, so security and configurability remain paramount. We are 
 using JWT tokens stored in HttpOnly cookies for secure authentication.
 
-Currently, we are in Phase 2, task 3: Implement JWT Token Authentication. We have completed the basic authentication 
-setup and are now ready to implement JWT token authentication. The JwtUtils class has been implemented, and we are 
-ready to create the JwtAuthFilter to validate JWTs.
+Currently, we are in Phase 2, task 5: Role based permission.
 
-Please remember to provide guidance in a compartmentalized and step-by-step approach. Let's focus on creating functional commits that represent a working state of the application. Do these instructions make sense? Do you have any questions or advice regarding this phase of development?
+Please remember to provide guidance in a compartmentalized and step-by-step approach. Let's focus on creating 
+functional commits that represent a working state of the application. Do these instructions make sense? Do you
+have any questions or advice regarding this phase of development?

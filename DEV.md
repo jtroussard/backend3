@@ -40,32 +40,19 @@
     - Accept tokens from cookies instead of `Authorization` headers
 - ✅ **Functional Commit**
 
-### [ ] **5. Role-Based Access Control (RBAC)**
+### [X] **5. Role-Based Access Control (RBAC)**
 - Expand `User` entity with **roles** (Admin, User, etc.)
-- Accept login request parameters in body and get front end to hash the password before sending
 - Modify `SecurityConfig`:
     - Restrict endpoints based on user roles
     - Enforce `@PreAuthorize` where needed
 - Update `JwtUtils` to include roles in JWT
 - Ensure `JwtAuthFilter` extracts roles from token
-- Discuss and consider building a controller endpoint to fetch the user roles for frontend auth context
-- ```javascript
-  useEffect(() => {
-  const fetchUserData = async () => {
-  try {
-  const response = await axios.get('/auth/me', { withCredentials: true });
-  const roles = response?.data?.roles || [];
-  setAuth({ user, roles });
-  } catch (err) {
-  console.error('Failed to fetch user data:', err);
-  }
-  };
+- ✅ **Functional Commit**
 
-  if (accessToken) {
-  fetchUserData();
-  }
-  }, [accessToken]);
-  ```
+### [ ] **5 and 1/2. Role-Based Access Control (RBAC)**
+- Expand `User` entity with **roles** (Admin, User, etc.)
+- Accept login request parameters in body and get front end to hash the password before sending
+- Redo validations
 - ✅ **Functional Commit**
 
 ### [ ] **6. Implement Refresh Tokens**
@@ -103,6 +90,24 @@
 - Update `/login` and `/register` API calls
 - Ensure JWT is sent in **cookies, not headers**
 - Update `RequireAuth.jsx` to handle role-based routing properly
+- - Discuss and consider building a controller endpoint to fetch the user roles for frontend auth context
+- ```javascript
+  useEffect(() => {
+  const fetchUserData = async () => {
+  try {
+  const response = await axios.get('/auth/me', { withCredentials: true });
+  const roles = response?.data?.roles || [];
+  setAuth({ user, roles });
+  } catch (err) {
+  console.error('Failed to fetch user data:', err);
+  }
+  };
+
+  if (accessToken) {
+  fetchUserData();
+  }
+  }, [accessToken]);
+  ```
 - ✅ **Functional Commit**
 
 ### [ ] **10. End-to-End Testing**
