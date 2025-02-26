@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/backend3
+    url: jdbc:postgresql://localhost:12031/backend3
     driver-class-name: org.postgresql.Driver
     username: db3_user
     password: db3_password

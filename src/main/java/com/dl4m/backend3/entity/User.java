@@ -61,6 +61,12 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
     // HINT ensure that entities are fetched from the database first before modifying.
     @PreUpdate
     protected void onUpdate() {
