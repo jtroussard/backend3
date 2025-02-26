@@ -1,5 +1,17 @@
 # DEVELOPMENT ROADMAP
 
+# work out registeration errors via curl
+
+```curl
+curl -X POST http://localhost:8080/api/user/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "registerationTestUser",
+    "email": "registerationTestUser@example.com",
+    "password": "test1!Password",
+    "confirmPassword": "test1!Password"
+}'
+```
 ---
 
 ## ✅ **Phase 1: Project Setup**
@@ -52,7 +64,7 @@
 ### [ ] **5 and 1/2. Role-Based Access Control (RBAC)**
 - Expand `User` entity with **roles** (Admin, User, etc.)
 - Accept login request parameters in body and get front end to hash the password before sending
-- Redo validations
+- Redo hand validations
 - ✅ **Functional Commit**
 
 ### [ ] **6. Implement Refresh Tokens**

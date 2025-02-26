@@ -1,5 +1,6 @@
 package com.dl4m.backend3.controller;
 
+import com.dl4m.backend3.dto.request.LoginRequest;
 import com.dl4m.backend3.security.JwtUtils;
 import com.dl4m.backend3.service.CustomUserDetailsService;
 import jakarta.annotation.security.PermitAll;
@@ -14,9 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.util.Arrays;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -41,14 +39,13 @@ public class AuthController {
     @PermitAll
     @PostMapping("/login")
     public ResponseEntity<String> login(
-            @RequestParam String username,
-            @RequestParam String password,
+            @RequestBody LoginRequest loginRequest,
             HttpServletResponse response
     ) {
         log.debug("[CONTROLLER] login endpoint called");
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -61,13 +58,7 @@ public class AuthController {
         jwtCookie.setMaxAge((int) (jwtUtils.getExpiration() / 1000));
         response.addCookie(jwtCookie);
 
-
         return ResponseEntity.ok("Login successful");
-// spoofed response for roles to test frontedn integration
-//        return ResponseEntity.ok(Map.of(
-//                "message", "Login successful",
-//                "roles", Arrays.asList(2001, 1984, 5150, 1337)
-//        ));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")

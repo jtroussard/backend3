@@ -20,9 +20,10 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
-    public User(String username, String password, Set<Role> roles) {
+    public User(String username, String password, String email, Set<Role> roles) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.roles = roles;
         this.createdAt = LocalDateTime.now();
     }
@@ -38,11 +39,13 @@ public class User {
     @Column(nullable = false, unique = true, length = 24)
     private String username;
 
-    @NotBlank(message = "Password is required")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$",
-            message = "Password must contain at least one uppercase, one lowercase, one number, and one special character (!@#$%)")
     @Column(nullable = false, length = 60) // 60 to accommodate hashed passwords
     private String password;
+
+    // TODO figure out the regex later
+//    @NotBlank(message = "Email address is required")
+    @Column(length = 254, nullable = true) // 60 to accommodate hashed passwords
+    private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
