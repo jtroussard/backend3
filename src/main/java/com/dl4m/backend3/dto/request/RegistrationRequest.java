@@ -1,6 +1,7 @@
 package com.dl4m.backend3.dto.request;
 
 import com.dl4m.backend3.validation.MatchingPassword;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -8,9 +9,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+
 @Data
 @AllArgsConstructor
 @MatchingPassword
+@JsonIgnoreProperties(ignoreUnknown = false)
 public class RegistrationRequest {
 
     @NotBlank(message = "Username is required")
