@@ -416,3 +416,7 @@ Below is a **comprehensive list of possible request scenarios** and their expect
 4. Generic third party sign in
 5. Generic plugin for authenticators
 6. Add Captcha as well or cloudflare DDOS tool?
+
+
+# PIN
+Working on integration. Reg is good, login is almost there, just need to get the front end to read and use the roles form the /me endpoint

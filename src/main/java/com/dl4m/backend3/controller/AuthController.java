@@ -1,6 +1,7 @@
 package com.dl4m.backend3.controller;
 
 import com.dl4m.backend3.dto.request.LoginRequest;
+import com.dl4m.backend3.security.CustomUserDetails;
 import com.dl4m.backend3.security.JwtUtils;
 import com.dl4m.backend3.service.CustomUserDetailsService;
 import jakarta.annotation.security.PermitAll;
@@ -10,11 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -59,6 +66,21 @@ public class AuthController {
         response.addCookie(jwtCookie);
 
         return ResponseEntity.ok("Login successful");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public ResponseEntity<?> getUserInfo(Authentication authentication) {
+        log.debug("[CONTROLLER] me endpoint called");
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("username", userDetails.getUsername());
+        response.put("roles", userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()));
+
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
