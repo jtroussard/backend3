@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: ${PROD_DB_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  jwt:
+    secret: ${PROD_JWT_SECRET}
+    expiration: 900000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  error:
+    include-message: always
+
+logging:
+  level:
+    root: INFO
+    org.springframework: ERROR

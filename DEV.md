@@ -1,7 +1,5 @@
 # DEVELOPMENT ROADMAP
 
-# work out registeration errors via curl
-
 ```curl
 curl -X POST http://localhost:8080/api/user/register \
   -H "Content-Type: application/json" \
@@ -61,40 +59,13 @@ curl -X POST http://localhost:8080/api/user/register \
 - Ensure `JwtAuthFilter` extracts roles from token
 - ✅ **Functional Commit**
 
-### [ ] **5 and 1/2. Role-Based Access Control (RBAC)**
+### [X] **5 and 1/2. Role-Based Access Control (RBAC)**
 - Expand `User` entity with **roles** (Admin, User, etc.)
 - Accept login request parameters in body and get front end to hash the password before sending
 - Redo hand validations
 - ✅ **Functional Commit**
 
-### [ ] **6. Implement Refresh Tokens**
-- Create `RefreshTokenService`
-- Modify `JwtUtils` to:
-    - Issue **short-lived access tokens**
-    - Generate **long-lived refresh tokens**
-- Implement `/refresh-token` endpoint
-- Store **refresh token in HttpOnly cookies**
-- Adjust `JwtAuthFilter` to handle **expired access tokens**
-- ✅ **Functional Commit**
-
----
-
-## ✅ **Phase 3: Security Enhancements**
-### [ ] **7. Re-enable CSRF Protection & CORS**
-- Enable **CSRF protection** for non-API requests
-- Configure **CORS policy**:
-    - Allow requests only from the frontend domain
-    - Restrict methods and headers properly
-- ✅ **Functional Commit**
-
-### [ ] **8. Advanced Security Features**
-- Implement **password hashing** with `BCrypt`
-- Add **account lockout** for repeated login failures
-- Implement **JWT key rotation**
-- (Optional) Implement **2FA**
-- ✅ **Functional Commit**
-
----
+--- 
 
 ## ✅ **Phase 4: Frontend Integration**
 ### [ ] **9. Modify Frontend to Use Spring Boot API**
@@ -416,7 +387,3 @@ Below is a **comprehensive list of possible request scenarios** and their expect
 4. Generic third party sign in
 5. Generic plugin for authenticators
 6. Add Captcha as well or cloudflare DDOS tool?
-
-
-# PIN
-Working on integration. Reg is good, login is almost there, just need to get the front end to read and use the roles form the /me endpoint

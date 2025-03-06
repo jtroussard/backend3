@@ -27,6 +27,8 @@ public class CustomUserDetails implements UserDetails {
         return user.getPassword();
     }
 
+    // TODO maybe think about using the role name for the backend and the role code for the frontend.
+    // Role name to follow spring boot conventions, and code for frontend as an added layer of obfuscation
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream()
