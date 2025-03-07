@@ -56,7 +56,12 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateToken(authentication.getPrincipal());
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof CustomUserDetails userDetails)) {
+            throw new IllegalStateException("Authentication principal is not an instance of CustomUserDetails");
+        }
+        String jwt = jwtUtils.generateToken(userDetails);
+
 
         Cookie jwtCookie = new Cookie("jwt", jwt);
         jwtCookie.setHttpOnly(true);

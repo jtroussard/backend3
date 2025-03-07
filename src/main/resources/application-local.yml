@@ -1,6 +1,7 @@
+# application-local.yml
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/backend3
+    url: jdbc:postgresql://host.docker.internal:5432/backend3
     driver-class-name: org.postgresql.Driver
     username: db3_user
     password: db3_password
@@ -40,25 +41,14 @@ jwt:
 
 logging:
   level:
-    root: DEBUG
-    org.springframework: ERROR # Spring Framework
-    org.hibernate: DEBUG # Hibernate
-    org.hibernate.SQL: DEBUG # SQL queries
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # Parameter binding
-    org.springframework.web: DEBUG # Web requests
-    org.springframework.security: DEBUG # Spring Security
-    com.dl4m.backend3: DEBUG # Your application
-    org.apache.catalina.filters.HttpHeaderSecurityFilter: DEBUG # Tomcat header security
-    org.apache.catalina.filters.RemoteIpFilter: DEBUG # Tomcat remote IP filter
-    org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: TRACE # Tomcat request tracing
-    org.apache.catalina.session: DEBUG # Tomcat session logging
-    org.apache.tomcat.util.net: DEBUG # Tomcat network logging
-    org.apache.coyote: DEBUG # Coyote logs
-    org.springframework.boot.devtools: ERROR # Spring Boot DevTools
-    org.postgresql: DEBUG # PostgreSQL driver
-    org.springframework.boot.test: DEBUG # Spring Boot Test
-    org.junit: DEBUG # JUnit
-    com.h2database: DEBUG # H2 database
-    io.jsonwebtoken: DEBUG # JJWT
-    org.springframework.data.jpa: DEBUG #spring data jpa
-    org.springframework.validation: DEBUG #Spring validation
+    root: INFO  # Keep essential logs only
+    org.apache.catalina: WARN  # Suppress Tomcat noise
+    org.apache.coyote: WARN    # Suppress Tomcat Connector logs
+    org.apache.tomcat: WARN    # Suppress Tomcat-specific logs
+    org.hibernate: WARN        # Reduce Hibernate logs
+    org.springframework: INFO  # Keep necessary Spring logs
+    org.postgresql: WARN       # Reduce Postgres driver logs
+    com.zaxxer.hikari: WARN    # Reduce HikariCP logs
+    org.springframework.jdbc: WARN
+    org.springframework.transaction: WARN
+    org.springframework.orm.jpa: WARN

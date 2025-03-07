@@ -1,0 +1,26 @@
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set Up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Authenticate with GCP
+        run: |
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > key.json
+          gcloud auth activate-service-account --key-file=key.json
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Build and Deploy
+        run: |
+          mvn clean package -DskipTests
+          gcloud run deploy backend3-service \
+            --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend3:latest \
+            --platform=managed \
+            --region=us-central1

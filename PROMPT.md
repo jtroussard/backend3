@@ -61,8 +61,22 @@ We are continuing to build a Spring Boot backend application designed to integra
 application will be critical and hosted in the cloud, so security and configurability remain paramount. We are
 using JWT tokens stored in HttpOnly cookies for secure authentication.
 
-The main project as been completed. There are some long term enhancements and clean up necessary but now we would like
-to create a CI/CD and verify a cloud deployment (DEV and PROD environments)
+The main project as been completed. There are some long term enhancements and clean up necessary, but now we would like
+to create a CI/CD and verify a cloud deployment. This deployment is to represent the dev cloud environment. I've already
+started creating a dev datasource and trying to align the application prop files.
+
+The ultimate goal of this project is that this app can easily deploy to GCP in any environment DEV or PROD, while still
+maintaining the option to deploy locally for local development (see the -local property file). I do not want to set any 
+env values manually. env variables and any secrets like db passwords or project ids should be stored in github secrets
+or googles secrets valut depeneding on the use case and where appropairate. The triggers should be as such:
+
+LOCAL: no deployment triggers, allow for terminal run command and passing the active profile "local"
+DEV: trigger a build and deploy pipeline on pr merge to dev branch
+PROD: trigger a build and deploy pipeline on cutting of release
+
+I will create a new GCP project and we will start from the scratch on the GCP side. please advise if we should set up
+the gcp stuff first like the project the iam roles the database etc, or if we should start by getting the spring boot
+application set up with all the classes and configurations first.
 
 Please remember to provide guidance in a compartmentalized and step-by-step approach. Let's focus on creating
 functional commits that represent a working state of the application. Do these instructions make sense? Do you

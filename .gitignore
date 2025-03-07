@@ -1,3 +1,5 @@
+backend3-sql-access-key.json
+cloud_sql_proxy
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

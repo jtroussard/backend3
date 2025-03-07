@@ -1,16 +1,15 @@
 package com.dl4m.backend3.security;
 
+import com.dl4m.backend3.config.JwtApplicationProperties;
+import com.dl4m.backend3.config.cloud.SecretManagerUtil;
+import com.dl4m.backend3.utils.CloudUtils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,32 +18,39 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
 
-    @Value("${jwt.secret}")
-    private String secret;
-
     @Getter
-    @Value("${jwt.expiration}")
-    private long expiration;
+    private final long expiration;
+    private final String secret;
+
+    public JwtUtils(
+            SecretManagerUtil secretManagerUtil,
+            JwtApplicationProperties jwtProperties,
+            CloudUtils cloudUtils
+    ) {
+        this.expiration = jwtProperties.getExpiration();
+
+        if (cloudUtils.isRunningInGCP()) {
+            this.secret = secretManagerUtil.getSecret("backend3-dev-jwt-secret");
+        } else {
+            this.secret = jwtProperties.getSecret();
+        }
+    }
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(Object principal) {
-        if (!(principal instanceof CustomUserDetails userDetails)) {
-            throw new IllegalArgumentException("Principal must be an instance of CustomUserDetails");
-        }
-
+    public String generateToken(CustomUserDetails userDetails) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
+                .map(role -> role.getAuthority())
                 .collect(Collectors.toList());
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .claim("roles", roles) // Store roles in the token
+                .claim("roles", roles)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(getSigningKey(), Jwts.SIG.HS256)

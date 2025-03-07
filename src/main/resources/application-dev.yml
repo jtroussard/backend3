@@ -1,9 +1,6 @@
 spring:
   datasource:
-    url: ${DEV_DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: ${DEV_DB_USERNAME}
-    password: ${DEV_DB_PASSWORD}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
@@ -11,11 +8,18 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
   jwt:
-    secret: ${DEV_JWT_SECRET}
     expiration: 900000
-
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false
 server:
-  port: 8080
+  port: {PORT:8080}
   servlet:
     context-path: /
   error:
