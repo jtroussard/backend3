@@ -1,15 +1,13 @@
 name: Backend CI/CD Deployments
 
 on:
-  push:
-    branches:
-      - deploy-test
   pull_request:
     types: [closed]
     branches:
       - dev
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   deploy-dev:
