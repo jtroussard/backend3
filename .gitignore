@@ -1,3 +1,4 @@
+.env
 backend3-sql-access-key.json
 cloud_sql_proxy
 HELP.md

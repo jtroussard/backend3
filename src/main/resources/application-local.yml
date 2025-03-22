@@ -1,16 +1,16 @@
-# application-local.yml
 spring:
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/backend3
+    url: ${LOCAL_DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: db3_user
-    password: db3_password
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
       idle-timeout: 30000
       max-lifetime: 1800000
       connection-timeout: 30000
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -20,6 +20,7 @@ spring:
         show_sql: true
         format_sql: true
     open-in-view: false
+
   jackson:
     deserialization:
       fail-on-unknown-properties: true
@@ -36,19 +37,19 @@ server:
         enable: true
 
 jwt:
-  secret: E9vbBG70kXggGNMeNcSIyeYdXR1mgPRQX3y77TdMZLo=
+  secret: ${LOCAL_JWT_SECRET}
   expiration: 900000
 
 logging:
   level:
-    root: INFO  # Keep essential logs only
-    org.apache.catalina: WARN  # Suppress Tomcat noise
-    org.apache.coyote: WARN    # Suppress Tomcat Connector logs
-    org.apache.tomcat: WARN    # Suppress Tomcat-specific logs
-    org.hibernate: WARN        # Reduce Hibernate logs
-    org.springframework: INFO  # Keep necessary Spring logs
-    org.postgresql: WARN       # Reduce Postgres driver logs
-    com.zaxxer.hikari: WARN    # Reduce HikariCP logs
+    root: INFO
+    org.apache.catalina: WARN
+    org.apache.coyote: WARN
+    org.apache.tomcat: WARN
+    org.hibernate: WARN
+    org.springframework: INFO
+    org.postgresql: WARN
+    com.zaxxer.hikari: WARN
     org.springframework.jdbc: WARN
     org.springframework.transaction: WARN
     org.springframework.orm.jpa: WARN

@@ -29,11 +29,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponse> register(@Valid @RequestBody RegistrationRequest registerRequest) {
         log.debug("[CONTROLLER] register endpoint called");
-        log.debug("TUNA Received password: {}", registerRequest.getPassword()); // Log received password
-
-        log.info("BEFORE");
         User user = new User(registerRequest.getUsername(), registerRequest.getPassword(), registerRequest.getEmail(), Collections.emptySet());
-        log.info("AFTER");
         User savedUser = userService.registerUser(user);
 
         RegistrationResponse response = new RegistrationResponse(savedUser.getId());
