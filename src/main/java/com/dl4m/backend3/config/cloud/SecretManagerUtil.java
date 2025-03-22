@@ -2,8 +2,10 @@ package com.dl4m.backend3.config.cloud;
 
 import com.dl4m.backend3.utils.CloudUtils;
 import com.google.cloud.secretmanager.v1.*;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+@Getter
 @Component
 public class SecretManagerUtil {
 
@@ -18,10 +20,6 @@ public class SecretManagerUtil {
         } else {
             this.projectId = "local-run-no-project-id";
         }
-    }
-
-    public String getProjectId() {
-        return projectId;
     }
 
     public String getSecret(String secretId) {

@@ -23,15 +23,30 @@ public class DevDataSourceConfig {
     @Bean
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
+
+        // Pull URL and creds from Secret Manager
         dataSource.setJdbcUrl(secretManagerUtil.getSecret("backend3-dev-db-url"));
-        dataSource.setUsername(secretManagerUtil.getSecret("backend3-dev-db-username"));
+        dataSource.setUsername(secretManagerUtil.getSecret("backend3-dev-db-user"));
         dataSource.setPassword(secretManagerUtil.getSecret("backend3-dev-db-password"));
 
-        dataSource.setMaximumPoolSize(appProperties.getDatasource().getHikari().getMaximumPoolSize());
-        dataSource.setMinimumIdle(appProperties.getDatasource().getHikari().getMinimumIdle());
-        dataSource.setIdleTimeout(appProperties.getDatasource().getHikari().getIdleTimeout());
-        dataSource.setMaxLifetime(appProperties.getDatasource().getHikari().getMaxLifetime());
-        dataSource.setConnectionTimeout(appProperties.getDatasource().getHikari().getConnectionTimeout());
+        // Pool settings from properties
+        SpringBootApplicationProperties.HikariProperties hikariProps = appProperties.getDatasource().getHikari();
+        dataSource.setMaximumPoolSize(hikariProps.getMaximumPoolSize());
+        dataSource.setConnectionTimeout(hikariProps.getConnectionTimeout());
+        dataSource.setMinimumIdle(hikariProps.getMinimumIdle());
+        dataSource.setIdleTimeout(hikariProps.getIdleTimeout());
+        dataSource.setMaxLifetime(hikariProps.getMaxLifetime());
+        dataSource.setValidationTimeout(hikariProps.getValidationTimeout());
+        dataSource.setConnectionTestQuery(hikariProps.getConnectionTestQuery());
+
+        // Add Cloud SQL Socket Factory properties
+        var dsProps = new java.util.Properties();
+        SpringBootApplicationProperties.CloudSqlProperties cloudSql = hikariProps.getCloudSql();
+        dsProps.setProperty("socketFactory", cloudSql.getSocketFactory());
+        dsProps.setProperty("cloudSqlInstance", cloudSql.getCloudSqlInstance());
+        dsProps.setProperty("sslmode", cloudSql.getSslMode());
+
+        dataSource.setDataSourceProperties(dsProps);
 
         return dataSource;
     }

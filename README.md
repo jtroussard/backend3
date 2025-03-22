@@ -11,6 +11,10 @@
 
 ## Roadmap
 
+### Production Implementation Research and Considerations
+
+- Private IP with VPC Connector (Serverless VPC Access) VS Cloud SQL Auth Proxy (Sidecar / Built-in with Cloud Run)
+
 ### Features to implement
 
 ### [ ] **Implement Refresh Tokens**

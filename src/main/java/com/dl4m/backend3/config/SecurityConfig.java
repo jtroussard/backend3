@@ -44,8 +44,12 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/test/public").permitAll() // Only these are public
+                        // PUBLIC
+                        .requestMatchers("/api/auth/login", "/api/auth/test/public").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/api/user/register").permitAll()
+//                        .requestMatchers("/h2-console/**").permitAll()
+                        // PRIVATE
                         .requestMatchers("/api/auth/test/protected").hasAnyRole("ADMIN", "SUPERVISOR") // Require role
                         .anyRequest().authenticated()
                 )

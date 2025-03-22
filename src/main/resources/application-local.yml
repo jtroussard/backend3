@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: ${LOCAL_DB_URL}
+    url: ${DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: ${LOCAL_DB_USERNAME}
-    password: ${LOCAL_DB_PASSWORD}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
@@ -37,8 +37,17 @@ server:
         enable: true
 
 jwt:
-  secret: ${LOCAL_JWT_SECRET}
+  secret: ${JWT_SECRET}
   expiration: 900000
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info
 
 logging:
   level:

@@ -1,14 +1,21 @@
 spring:
   datasource:
+    url: jdbc:postgresql:///backend3-dev-db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10
+      maximum-pool-size: 5
+      connection-timeout: 30000
       minimum-idle: 2
       idle-timeout: 30000
       max-lifetime: 1800000
-      connection-timeout: 300000
-  jwt:
-    expiration: 900000
+      validation-timeout: 3000
+      connection-test-query: SELECT 1
+      data-source-properties:
+        socketFactory: com.google.cloud.sql.postgres.SocketFactory
+        cloudSqlInstance: devlife4me-generic-apps:us-central1:backend3-postgresql-dev
+        sslmode: disable
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -24,6 +31,10 @@ server:
     context-path: /
   error:
     include-message: always
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 900000
 
 logging:
   level:

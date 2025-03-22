@@ -1,0 +1,53 @@
+# Maven output
+target/
+.mvn/
+
+# Git
+.git
+.gitignore
+
+# IDE
+*.iml
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS / Mac
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test artifacts
+test-outputs/
+test-results/
+coverage/
+jacoco.exec
+build/
+
+# Local env files
+.env
+*.env
+
+# Docker-related
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Node crap if you accidentally have a frontend folder
+node_modules/
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Scripts
+scripts/
+
+# Misc
+*.bak
+*.tmp
+*.old
