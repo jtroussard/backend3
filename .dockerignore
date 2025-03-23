@@ -1,6 +1,8 @@
+cloud_sql_proxy
+backend3-sql-access-key.json
+
 # Maven output
 target/
-.mvn/
 
 # Git
 .git

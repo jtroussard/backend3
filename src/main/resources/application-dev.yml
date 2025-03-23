@@ -1,8 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql:///backend3-dev-db
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql:///backend3?cloudSqlInstance=devlife4me-generic-apps:us-central1:backend3-postgresql-dev&socketFactory=com.google.cloud.sql.postgres.SocketFactory&sslmode=disable
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
@@ -12,10 +10,11 @@ spring:
       max-lifetime: 1800000
       validation-timeout: 3000
       connection-test-query: SELECT 1
-      data-source-properties:
-        socketFactory: com.google.cloud.sql.postgres.SocketFactory
-        cloudSqlInstance: devlife4me-generic-apps:us-central1:backend3-postgresql-dev
-        sslmode: disable
+      cloud-sql:
+        socket-factory: com.google.cloud.sql.postgres.SocketFactory
+        cloud-sql-instance: devlife4me-generic-apps:us-central1:backend3-postgresql-dev
+        ssl-mode: disable
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -25,18 +24,30 @@ spring:
         show_sql: true
         format_sql: true
     open-in-view: false
+
 server:
-  port: 8080
+  port: ${PORT:8080}
+  address: 0.0.0.0
   servlet:
     context-path: /
   error:
     include-message: always
 
 jwt:
-  secret: ${JWT_SECRET}
   expiration: 900000
 
 logging:
   level:
     root: DEBUG
-    org.springframework: ERROR
+    org.springframework: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.apache.catalina: DEBUG
+    org.apache.coyote: DEBUG
+    com.zaxxer.hikari: DEBUG
+    com.zaxxer.hikari.pool: TRACE
+    com.dl4m.backend3: DEBUG

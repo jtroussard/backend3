@@ -24,13 +24,21 @@ public class DevDataSourceConfig {
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
 
-        // Pull URL and creds from Secret Manager
-        dataSource.setJdbcUrl(secretManagerUtil.getSecret("backend3-dev-db-url"));
+        // Base JDBC URL placeholder - Cloud SQL Socket Factory will override
+        SpringBootApplicationProperties.DataSourceProperties dsProps = appProperties.getDatasource();
+        dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/backend3");
+        dataSource.setDriverClassName(dsProps.getDriverClassName());
         dataSource.setUsername(secretManagerUtil.getSecret("backend3-dev-db-user"));
         dataSource.setPassword(secretManagerUtil.getSecret("backend3-dev-db-password"));
 
-        // Pool settings from properties
-        SpringBootApplicationProperties.HikariProperties hikariProps = appProperties.getDatasource().getHikari();
+        // Cloud SQL Socket Factory properties from bindings
+        SpringBootApplicationProperties.CloudSqlProperties cloudSql = dsProps.getHikari().getCloudSql();
+        dataSource.addDataSourceProperty("socketFactory", cloudSql.getSocketFactory());
+        dataSource.addDataSourceProperty("cloudSqlInstance", cloudSql.getCloudSqlInstance());
+        dataSource.addDataSourceProperty("sslmode", cloudSql.getSslMode());
+
+        // Hikari pool tuning from properties
+        SpringBootApplicationProperties.HikariProperties hikariProps = dsProps.getHikari();
         dataSource.setMaximumPoolSize(hikariProps.getMaximumPoolSize());
         dataSource.setConnectionTimeout(hikariProps.getConnectionTimeout());
         dataSource.setMinimumIdle(hikariProps.getMinimumIdle());
@@ -38,15 +46,6 @@ public class DevDataSourceConfig {
         dataSource.setMaxLifetime(hikariProps.getMaxLifetime());
         dataSource.setValidationTimeout(hikariProps.getValidationTimeout());
         dataSource.setConnectionTestQuery(hikariProps.getConnectionTestQuery());
-
-        // Add Cloud SQL Socket Factory properties
-        var dsProps = new java.util.Properties();
-        SpringBootApplicationProperties.CloudSqlProperties cloudSql = hikariProps.getCloudSql();
-        dsProps.setProperty("socketFactory", cloudSql.getSocketFactory());
-        dsProps.setProperty("cloudSqlInstance", cloudSql.getCloudSqlInstance());
-        dsProps.setProperty("sslmode", cloudSql.getSslMode());
-
-        dataSource.setDataSourceProperties(dsProps);
 
         return dataSource;
     }

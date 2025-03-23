@@ -1,0 +1,16 @@
+ 1122  docker buildx build --platform=linux/amd64 -t backend3-app .\n
+ 1123  docker buildx build --platform=linux/amd64 -t us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest --push .\n
+ 1124  gcloud run deploy backend3-service \\n  --image=us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest \\n  --platform=managed \\n  --region=us-central1 \\n  --allow-unauthenticated \\n  --set-env-vars "SPRING_PROFILES_ACTIVE=dev,GCP_PROJECT_ID=devlife4me-generic-apps" \\n  --service-account=backend3-sql-access@devlife4me-generic-apps.iam.gserviceaccount.com\n
+ 1125  docker buildx build --platform=linux/amd64 -t us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest --push .\n
+ 1126  gcloud run deploy backend3-service \\n  --image=us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest \\n  --platform=managed \\n  --region=us-central1 \\n  --allow-unauthenticated \\n  --set-env-vars "SPRING_PROFILES_ACTIVE=dev,GCP_PROJECT_ID=devlife4me-generic-apps" \\n  --service-account=backend3-sql-access@devlife4me-generic-apps.iam.gserviceaccount.com\n
+ 1127  docker buildx build --platform=linux/amd64 -t us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest --push .
+ 1128  gcloud run deploy backend3-service \\n  --image=us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest \\n  --platform=managed \\n  --region=us-central1 \\n  --allow-unauthenticated \\n  --set-env-vars "SPRING_PROFILES_ACTIVE=dev,GCP_PROJECT_ID=devlife4me-generic-apps" \\n  --service-account=backend3-sql-access@devlife4me-generic-apps.iam.gserviceaccount.com\n
+ 1129  docker buildx build --platform=linux/amd64 -t us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest --push .
+ 1130  gcloud run deploy backend3-service \\n  --image=us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest \\n  --platform=managed \\n  --region=us-central1 \\n  --allow-unauthenticated \\n  --set-env-vars "SPRING_PROFILES_ACTIVE=dev,GCP_PROJECT_ID=devlife4me-generic-apps" \\n  --service-account=backend3-sql-access@devlife4me-generic-apps.iam.gserviceaccount.com\n
+ 1131  docker buildx build --platform=linux/amd64 -t us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest --push .
+ 1132  gcloud run deploy backend3-service \\n  --image=us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest \\n  --platform=managed \\n  --region=us-central1 \\n  --allow-unauthenticated \\n  --set-env-vars "SPRING_PROFILES_ACTIVE=dev,GCP_PROJECT_ID=devlife4me-generic-apps" \\n  --service-account=backend3-sql-access@devlife4me-generic-apps.iam.gserviceaccount.com\n
+ 1133  docker buildx build --platform=linux/amd64 -t us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest --push .
+ 1134  gcloud run deploy backend3-service \\n  --image=us-central1-docker.pkg.dev/devlife4me-generic-apps/backend3/backend3-app:latest \\n  --platform=managed \\n  --region=us-central1 \\n  --allow-unauthenticated \\n  --set-env-vars "SPRING_PROFILES_ACTIVE=dev,GCP_PROJECT_ID=devlife4me-generic-apps" \\n  --service-account=backend3-sql-access@devlife4me-generic-apps.iam.gserviceaccount.com\n
+ 1135  history
+ 1136  history | grep sql
+ 1137  history | grep gcloud

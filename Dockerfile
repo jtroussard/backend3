@@ -31,7 +31,7 @@ ARG SPRING_PROFILES_ACTIVE=dev
 ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
 
 # Google Cloud Secret Manager Authentication (only in dev/prod)
-ENV GCP_PROJECT_ID=""
+ENV GCP_PROJECT_ID="devlife4me-generic-apps"
 
 # Start the Spring Boot application with profile-based config
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
+ENTRYPOINT exec java -jar app.jar --spring.profiles.active=${SPRING_PROFILES_ACTIVE} --server.port=${PORT}
