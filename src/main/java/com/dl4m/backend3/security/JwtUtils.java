@@ -30,8 +30,9 @@ public class JwtUtils {
         this.expiration = jwtProperties.getExpiration();
 
         if (cloudUtils.isRunningInGCP()) {
-            this.secret = secretManagerUtil.getSecret("backend3-dev-jwt-secret");
+            this.secret = secretManagerUtil.getSecret("jwt-secret-dev");
         } else {
+            // Local deployment sets the secret in the prop file directly via a .env file
             this.secret = jwtProperties.getSecret();
         }
     }

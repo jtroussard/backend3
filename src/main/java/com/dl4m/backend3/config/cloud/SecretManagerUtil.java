@@ -9,20 +9,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecretManagerUtil {
 
-    private final String projectId;
+    private final String projectId = "devlife4me-generic-apps";
+    private final boolean runningInGcp;
 
     public SecretManagerUtil(CloudUtils cloudUtils) {
-        if (cloudUtils.isRunningInGCP()) {
-            this.projectId = System.getenv("GCP_PROJECT_ID");
-            if (this.projectId == null || this.projectId.isBlank()) {
-                throw new IllegalStateException("GCP_PROJECT_ID environment variable is not set.");
-            }
-        } else {
-            this.projectId = "local-run-no-project-id";
-        }
+        this.runningInGcp = cloudUtils.isRunningInGCP();
     }
 
     public String getSecret(String secretId) {
+        if (!runningInGcp) {
+            throw new UnsupportedOperationException("Secret fetching is only supported in GCP runtime.");
+        }
+
         try (SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
             SecretVersionName secretVersionName = SecretVersionName.of(projectId, secretId, "latest");
             AccessSecretVersionResponse response = client.accessSecretVersion(secretVersionName);

@@ -1,6 +1,6 @@
+# src/main/resources/application-dev.yml
 spring:
   datasource:
-    url: jdbc:postgresql:///backend3?cloudSqlInstance=devlife4me-generic-apps:us-central1:backend3-postgresql-dev&socketFactory=com.google.cloud.sql.postgres.SocketFactory&sslmode=disable
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
@@ -10,10 +10,6 @@ spring:
       max-lifetime: 1800000
       validation-timeout: 3000
       connection-test-query: SELECT 1
-      cloud-sql:
-        socket-factory: com.google.cloud.sql.postgres.SocketFactory
-        cloud-sql-instance: devlife4me-generic-apps:us-central1:backend3-postgresql-dev
-        ssl-mode: disable
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -35,6 +31,15 @@ server:
 
 jwt:
   expiration: 900000
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info
 
 logging:
   level:

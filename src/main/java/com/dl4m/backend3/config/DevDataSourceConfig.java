@@ -2,6 +2,7 @@ package com.dl4m.backend3.config;
 
 import com.dl4m.backend3.config.cloud.SecretManagerUtil;
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,22 +21,21 @@ public class DevDataSourceConfig {
         this.appProperties = appProperties;
     }
 
+    @PostConstruct
+    public void init() {
+        System.out.println("TUNA️ DevDataSourceConfig initializing");
+    }
+
     @Bean
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
 
         // Base JDBC URL placeholder - Cloud SQL Socket Factory will override
         SpringBootApplicationProperties.DataSourceProperties dsProps = appProperties.getDatasource();
-        dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/backend3");
+        dataSource.setJdbcUrl(secretManagerUtil.getSecret("jdbc-url-dev"));
         dataSource.setDriverClassName(dsProps.getDriverClassName());
-        dataSource.setUsername(secretManagerUtil.getSecret("backend3-dev-db-user"));
-        dataSource.setPassword(secretManagerUtil.getSecret("backend3-dev-db-password"));
-
-        // Cloud SQL Socket Factory properties from bindings
-        SpringBootApplicationProperties.CloudSqlProperties cloudSql = dsProps.getHikari().getCloudSql();
-        dataSource.addDataSourceProperty("socketFactory", cloudSql.getSocketFactory());
-        dataSource.addDataSourceProperty("cloudSqlInstance", cloudSql.getCloudSqlInstance());
-        dataSource.addDataSourceProperty("sslmode", cloudSql.getSslMode());
+        dataSource.setUsername(secretManagerUtil.getSecret("db-user-dev"));
+        dataSource.setPassword(secretManagerUtil.getSecret("db-password-dev"));
 
         // Hikari pool tuning from properties
         SpringBootApplicationProperties.HikariProperties hikariProps = dsProps.getHikari();

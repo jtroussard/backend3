@@ -26,12 +26,9 @@ EXPOSE 8080
 RUN useradd -m appuser
 USER appuser
 
-# Environment variable for active Spring profile (default to 'local' if not set)
-ARG SPRING_PROFILES_ACTIVE=dev
-ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-
 # Google Cloud Secret Manager Authentication (only in dev/prod)
 ENV GCP_PROJECT_ID="devlife4me-generic-apps"
 
 # Start the Spring Boot application with profile-based config
-ENTRYPOINT exec java -jar app.jar --spring.profiles.active=${SPRING_PROFILES_ACTIVE} --server.port=${PORT}
+# Active profile will be set via the command line at deployment time.
+ENTRYPOINT ["java", "-jar", "app.jar"]
