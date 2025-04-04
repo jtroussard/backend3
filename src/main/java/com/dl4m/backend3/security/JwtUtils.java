@@ -49,6 +49,7 @@ public class JwtUtils {
                 .map(role -> role.getAuthority())
                 .collect(Collectors.toList());
 
+        log.debug("[{}] Generated JWT for user {}", this.getClass().getSimpleName(), userDetails.getUsername());
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .claim("roles", roles)
@@ -66,6 +67,7 @@ public class JwtUtils {
                     .parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            log.debug("[{}] Token validation failed: {}", this.getClass().getSimpleName(), e.getMessage());
             return false;
         }
     }

@@ -20,6 +20,9 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        properties:
+          hibernate.format_sql: true
+          hibernate.generate_statistics: true
     open-in-view: false
 
   jackson:
@@ -53,13 +56,40 @@ management:
 logging:
   level:
     root: INFO
-    org.apache.catalina: WARN
-    org.apache.coyote: WARN
-    org.apache.tomcat: WARN
-    org.hibernate: WARN
+
+    # Hibernate / JPA
+    org.hibernate: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.engine.transaction.internal.TransactionImpl: DEBUG
+    org.hibernate.event.internal: DEBUG
+    org.hibernate.stat: DEBUG
+
+    # Spring Framework
     org.springframework: INFO
-    org.postgresql: WARN
-    com.zaxxer.hikari: WARN
-    org.springframework.jdbc: WARN
-    org.springframework.transaction: WARN
-    org.springframework.orm.jpa: WARN
+    org.springframework.jdbc: INFO
+    org.springframework.transaction: INFO
+    org.springframework.orm.jpa: INFO
+    org.springframework.context.annotation: DEBUG
+    org.springframework.beans.factory: DEBUG
+
+    # Spring Security
+    org.springframework.security: DEBUG
+    org.springframework.security.web.access: DEBUG
+    org.springframework.security.web.FilterChainProxy: DEBUG
+    org.springframework.security.authentication: DEBUG
+
+    # Web MVC
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
+    # HTTP server
+    org.apache.catalina: INFO
+    org.apache.coyote: INFO
+    org.apache.tomcat: INFO
+
+    # Database connection pool
+    com.zaxxer.hikari: INFO
+    org.postgresql: INFO

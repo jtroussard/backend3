@@ -31,10 +31,4 @@ public class Role {
 
     @Column(length = 50)
     private String displayName;
-
-    // TODO remove before deployment, minor security issue.
-    @Override
-    public String toString() {
-        return "Role{id=" + id + ", name='" + displayName + ", code='" + code + "'}";
-    }
 }

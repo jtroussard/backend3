@@ -5,7 +5,9 @@ import com.dl4m.backend3.dto.response.RegistrationResponse;
 import com.dl4m.backend3.entity.User;
 import com.dl4m.backend3.service.UserServiceImpl;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ public class UserController {
 
     private final UserServiceImpl userService;
 
+    @Autowired
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
@@ -29,6 +32,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponse> register(@Valid @RequestBody RegistrationRequest registerRequest) {
         log.debug("[CONTROLLER] register endpoint called");
+        // TODO: need to implement a super basic role setter with BL
         User user = new User(registerRequest.getUsername(), registerRequest.getPassword(), registerRequest.getEmail(), Collections.emptySet());
         User savedUser = userService.registerUser(user);
 

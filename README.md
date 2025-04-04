@@ -4,10 +4,13 @@
 
 ### Useful Commands
 
-| command | description |
-|---------|-------------|
-|`./mvnw clean install -Dspring.profiles.active=local`| clean install with active profile|
-|`./mvnw spring-boot:run -Dspring-boot.run.profiles=local`| run the apring-boot app locally with the local profile active|
+| command | description                                                        |
+|---------|--------------------------------------------------------------------|
+|`./mvnw clean install -Dspring.profiles.active=local`| clean install with active profile                                  |
+|`export $(grep -v '^#' .env | xargs) && ./mvnw spring-boot:run -Dspring-boot.run.profiles=local` | run the apring-boot app locally with the local profile active|
+
+`./mvnw spring-boot:run -Dspring-boot.run.profiles=local`
+
 
 ## Roadmap
 
@@ -16,6 +19,8 @@
 - Private IP with VPC Connector (Serverless VPC Access) VS Cloud SQL Auth Proxy (Sidecar / Built-in with Cloud Run)
 
 ### Features to implement
+
+### [ ] **Refactor to be a deployable module**
 
 ### [ ] **Implement Refresh Tokens**
 - Create `RefreshTokenService`

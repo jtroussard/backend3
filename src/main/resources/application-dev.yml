@@ -47,6 +47,9 @@ logging:
     org.springframework: DEBUG
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
+    org.springframework.security.web.FilterChainProxy: DEBUG
+    org.springframework.security.web.access.ExceptionTranslationFilter: DEBUG
+    org.springframework.security.web.authentication: DEBUG
     org.hibernate: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE

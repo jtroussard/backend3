@@ -4,6 +4,7 @@ import com.dl4m.backend3.dto.request.LoginRequest;
 import com.dl4m.backend3.security.CustomUserDetails;
 import com.dl4m.backend3.security.JwtUtils;
 import com.dl4m.backend3.service.CustomUserDetailsService;
+import com.dl4m.backend3.utils.CloudUtils;
 import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +29,25 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 public class AuthController {
 
+    // TODO: Consider extracting cookie creation to a utility for reuse and testability.
+    //       Also evaluate SameSite="Strict" or "Lax" depending on CSRF strategy.
+
     CustomUserDetailsService userDetailsService;
     AuthenticationManager authenticationManager;
     JwtUtils jwtUtils;
+    CloudUtils cloudUtils;
 
     @Autowired
     public AuthController(
             CustomUserDetailsService userDetailsService,
             AuthenticationManager authenticationManager,
-            JwtUtils jwtUtils
+            JwtUtils jwtUtils,
+            CloudUtils cloudUtils
     ) {
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.cloudUtils =  cloudUtils;
     }
 
     @PermitAll
@@ -49,7 +56,7 @@ public class AuthController {
             @RequestBody LoginRequest loginRequest,
             HttpServletResponse response
     ) {
-        log.debug("[CONTROLLER] login endpoint called");
+        log.debug("[{}] login endpoint called", this.getClass().getSimpleName());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
@@ -64,8 +71,11 @@ public class AuthController {
 
 
         Cookie jwtCookie = new Cookie("jwt", jwt);
+        boolean cookieSecureSetting = cloudUtils.isRunningInGCP();
+        log.debug("[{}] Running in GCP: {}", this.getClass().getSimpleName(), cookieSecureSetting);
         jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(false); // Set to true for HTTPS in production
+        jwtCookie.setAttribute("SameSite", "None");
+        jwtCookie.setSecure(cookieSecureSetting);
         jwtCookie.setPath("/");
         jwtCookie.setMaxAge((int) (jwtUtils.getExpiration() / 1000));
         response.addCookie(jwtCookie);
@@ -76,7 +86,7 @@ public class AuthController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public ResponseEntity<?> getUserInfo(Authentication authentication) {
-        log.debug("[CONTROLLER] me endpoint called");
+        log.debug("[{}] me endpoint called", this.getClass().getSimpleName());
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         Map<String, Object> response = new HashMap<>();
@@ -91,14 +101,14 @@ public class AuthController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping("/test/protected")
     public ResponseEntity<String> protectedTest() {
-        log.debug("[CONTROLLER] protectedTest endpoint called");
+        log.debug("[{}] protectedTest endpoint called", this.getClass().getSimpleName());
         return ResponseEntity.ok("You're good!");
     }
 
     @PermitAll
     @GetMapping("/test/public")
     public ResponseEntity<String> publicTest() {
-        log.debug("[CONTROLLER] publicTest endpoint called");
+        log.debug("[{}] publicTest endpoint called", this.getClass().getSimpleName());
         return ResponseEntity.ok("This is a public endpoint.");
     }
 

@@ -11,7 +11,11 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-// TODO centralize the reg rules
+// TODO: Centralize the reg rules Best practice is to keep validation
+//       annotations in the DTO layer, not in entities. In this case,
+//       the @NotBlank, @Size, and @Pattern on username should ideally
+//       live in RegistrationRequest, not here.
+// NOTE: EAGER fetch for roles may be refactored to LAZY if performance becomes an issue
 
 @NoArgsConstructor
 @Entity
@@ -56,7 +60,7 @@ public class User {
     private Set<Role> roles;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
@@ -75,7 +79,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{ id= " + id + ", username= " + username + ", " + "createdAt= " + createdAt;
+        return "User{ id= " + id + ", username= " + username + ", " + "createdAt= " + createdAt + " }";
     }
 
 }

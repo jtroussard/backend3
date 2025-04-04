@@ -7,6 +7,7 @@ import com.dl4m.backend3.exception.UsernameAlreadyExistsException;
 import com.dl4m.backend3.repo.RoleRepo;
 import com.dl4m.backend3.repo.UserRepo;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
@@ -34,6 +36,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User registerUser(User user) {
+        String something = userRepo.findAll().toString();
+        log.info("TUNA {}", something);
         if (userRepo.findByUsername(user.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException("Username '" + user.getUsername() + "' is already taken");
         }

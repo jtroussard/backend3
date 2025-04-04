@@ -3,12 +3,14 @@ package com.dl4m.backend3.config;
 import com.dl4m.backend3.config.cloud.SecretManagerUtil;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 
+@Slf4j
 @Configuration
 @Profile("dev")
 public class DevDataSourceConfig {
@@ -23,7 +25,7 @@ public class DevDataSourceConfig {
 
     @PostConstruct
     public void init() {
-        System.out.println("TUNA️ DevDataSourceConfig initializing");
+        log.debug("[{}] Initializing dev datasource configuration", this.getClass().getSimpleName());
     }
 
     @Bean

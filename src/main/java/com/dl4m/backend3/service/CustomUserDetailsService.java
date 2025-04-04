@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    // TODO: Consider supporting lookup by email in the future
+    //       Spring Security can be extended to support multiple login identifiers
+
     private final UserService userService;
 
     @Autowired
